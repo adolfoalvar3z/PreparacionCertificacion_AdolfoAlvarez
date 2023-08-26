@@ -1,14 +1,55 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Clients</h1>
-
+<h1 class="my-3">Clientes</h1>
 <div id="clients">
-  <% @clients.each do |client| %>
-    <%= render client %>
-    <p>
-      <%= link_to "Show this client", client %>
-    </p>
-  <% end %>
+  <div class="row">
+    <div class="col-3">
+      <%= link_to "Nuevo cliente", new_client_path, class:"btn btn-lg w-100 btn-success" %>
+    </div>
+    <div class="col-9">
+      <%= form_with url: calls_path, method: :get do |form| %>
+        <!-- Cuadro de búsqueda-->
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="input-group">
+              <%= form.text_field :buscar, class: "form-control", placeholder: "Buscar Publicación", value: @consulta %>
+              <%= form.submit 'Buscar', class: "btn btn-outline-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefono</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @clients.each do |client| %>
+          <tr class="">
+            <td> <%= client.name %> </td>
+            <td> <%= client.email %> </td>
+            <td> <%= client.phone %> </td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <%= link_to client_calls_path(client.id) do %>
+                  <i class="fa-solid fa-phone-volume fa-2xl mx-2"></i>
+                <% end %>
+                <%= link_to new_client_call_path(client.id) do %>
+                  <i class="fas fa-phone fa-2xl mx-2"></i>
+                <% end %>
+                <%= button_to "Eliminar", client, method: :delete, class:"btn btn-danger" %>
+                <%= link_to "Editar", edit_client_path(client.id), class:"btn btn-warning" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<%= link_to "New client", new_client_path %>
+<%== pagy_bootstrap_nav(@pagy) %>

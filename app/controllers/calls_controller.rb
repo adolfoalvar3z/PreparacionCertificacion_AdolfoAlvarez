@@ -1,9 +1,22 @@
 class CallsController < ApplicationController
   before_action :set_call, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /calls or /calls.json
   def index
-    @calls = Call.all
+    @consulta = params[:buscar]
+
+    if @consulta.present?
+      @pagy, @calls = pagy(Call.search_full_text(@consulta))
+    else
+      if params[:client_id] != nil
+        @client = Client.find(params[:client_id])
+        @pagy,@calls = pagy(@client.calls)
+      else
+          @pagy, @calls = pagy(Call.all)
+      end
+    end
+
   end
 
   # GET /calls/1 or /calls/1.json

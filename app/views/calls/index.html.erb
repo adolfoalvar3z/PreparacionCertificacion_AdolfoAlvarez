@@ -1,14 +1,49 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Calls</h1>
-
-<div id="calls">
-  <% @calls.each do |call| %>
-    <%= render call %>
-    <p>
-      <%= link_to "Show this call", call %>
-    </p>
-  <% end %>
+<h1 class="my-3">Llamadas</h1>
+<div id="clients">
+  <div class="row">
+    <div class="col-3">
+      <%= link_to "Nuevo Llamado", new_call_path, class:"btn btn-lg w-100 btn-success" %>
+    </div>
+    <div class="col-9">
+      <%= form_with url: calls_path, method: :get do |form| %>
+        <!-- Cuadro de búsqueda-->
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="input-group">
+              <%= form.text_field :buscar, class: "form-control", placeholder: "Buscar Publicación", value: @consulta %>
+              <%= form.submit 'Buscar', class: "btn btn-outline-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Client</th>
+          <th scope="col">Razón</th>
+          <th scope="col">Detalle</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @calls.each do |call| %>
+          <tr class="">
+            <td> <%= call.client.name %> </td>
+            <td> <%= call.reason %> </td>
+            <td> <%= call.detail %> </td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+               <!--<%= button_to "Eliminar", call, method: :delete, class:"btn btn-danger" %>-->
+                <%= link_to "Editar", edit_call_path(call.id), class:"btn btn-warning" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<%= link_to "New call", new_call_path %>
+<%== pagy_bootstrap_nav(@pagy) %>

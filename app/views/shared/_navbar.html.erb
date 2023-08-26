@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-warning">
+  <div class="container">
+    <a class="navbar-brand" href="<%= calls_path %>">PREPARACIÓN EXAMEN</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="<%= calls_path %>" aria-current="page">Inicio <span class="visually-hidden">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= calls_path %>">Llamadas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= clients_path %>">Clientes</a>
+        </li>
+        <% if !user_signed_in? %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= user_session_path %>">Ingresar</a>
+          </li>
+        <% end %>
+        <% if user_signed_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_user.email %></a>
+            <div class="dropdown-menu" aria-labelledby="dropdownId">
+              <%= button_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<% if notice.present? %>
+  <p class="notice alert alert-warning" role="alert"><%= notice %></p>
+<% end %>
+<% if alert.present? %>
+  <p class="alert alert alert-danger" role="alert"><%= alert  %></p>
+<% end %>

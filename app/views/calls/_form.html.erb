@@ -1,7 +1,7 @@
-<%= form_with(model: call) do |form| %>
+<%= form_with(model: call, class: "form") do |form| %>
   <% if call.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(call.errors.count, "error") %> prohibited this call from being saved:</h2>
+    <div class="alert alert-danger">
+      <h2 class="my-3"><%= pluralize(call.errors.count, "error") %> prohibited this call from being saved:</h2>
 
       <ul>
         <% call.errors.each do |error| %>
@@ -11,22 +11,26 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :reason, style: "display: block" %>
-    <%= form.text_field :reason %>
+  <div class="mb-3">
+    <%= form.label :reason, "Razón", class: "form-label" %>
+    <%= form.select :reason, Call.reasons.keys, { selected: "Consulta" }, class: "form-select" %>
   </div>
 
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
+  <div class="mb-3">
+    <%= form.label :client_id, "Cliente", class: "form-label" %>
+    <% if params[:client_id].nil? %>
+      <%= form.collection_select :client_id, Client.all, :id, :name, { include_blank: true }, class: "form-select" %>
+    <% else %>
+      <%= form.collection_select :client_id, Client.all, :id, :name, { selected: params[:client_id] }, class: "form-select" %>
+    <% end %>
   </div>
 
-  <div>
-    <%= form.label :detail, style: "display: block" %>
-    <%= form.text_area :detail %>
+  <div class="mb-3">
+    <%= form.label :detail, "Detalle", class: "form-label" %>
+    <%= form.text_area :detail, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="mb-3">
+    <%= form.submit "Guardar", class: "btn btn-primary" %>
   </div>
 <% end %>
